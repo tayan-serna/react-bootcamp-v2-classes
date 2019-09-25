@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Card from '../Card';
+import Filter from '../Filter';
 
 const mockData = [
   {
@@ -28,19 +29,36 @@ const mockData = [
   }
 ];
 
-const CardsWrapper = () => (
-  <>
-    {' '}
-    <div className="App_label-group App_filter">
-      <label htmlFor="filter">Filter:</label>
-      <input id="filter" />
-    </div>
-    <ul className="App_card-list">
-      {mockData.map(chart => (
-        <Card key={chart.id} {...chart} />
-      ))}
-    </ul>
-  </>
-);
+class CardsWrapper extends Component {
+  state = {
+    value: '',
+    characterList: mockData,
+    characterListFiltered: mockData
+  };
+
+  handleChange = e => {
+    const value = e.target.value;
+    const characterListFiltered = this.state.characterList.filter(chart =>
+      chart.name.toLowerCase().includes(value.toLowerCase())
+    );
+    this.setState(() => ({
+      value,
+      characterListFiltered: characterListFiltered
+    }));
+  };
+
+  render() {
+    return (
+      <>
+        <Filter handleChange={this.handleChange} value={this.state.value} />
+        <ul className="App_card-list">
+          {this.state.characterListFiltered.map(chart => (
+            <Card key={chart.id} {...chart} />
+          ))}
+        </ul>
+      </>
+    );
+  }
+}
 
 export default CardsWrapper;
