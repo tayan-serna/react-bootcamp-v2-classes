@@ -1,39 +1,17 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import Card from '../Card';
 import Filter from '../Filter';
 
-const mockData = [
-  {
-    id: 1,
-    name: 'Rick Sanchez',
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-    favorite: false
-  },
-  {
-    id: 2,
-    name: 'Morty Smith',
-    image: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
-    favorite: false
-  },
-  {
-    id: 3,
-    name: 'Summer Smith',
-    image: 'https://rickandmortyapi.com/api/character/avatar/3.jpeg',
-    favorite: true
-  },
-  {
-    id: 4,
-    name: 'Beth Smith',
-    image: 'https://rickandmortyapi.com/api/character/avatar/4.jpeg',
-    favorite: false
-  }
-];
+const RickAndMortyUrl = 'https://rickandmortyapi.com/api/character';
 
 class CardsWrapper extends Component {
   state = {
     value: '',
-    characterList: mockData,
-    characterListFiltered: mockData
+    characterList: [],
+    characterListFiltered: [],
+    loading: true
   };
 
   handleChange = e => {
@@ -47,13 +25,30 @@ class CardsWrapper extends Component {
     }));
   };
 
+  componentDidMount() {
+    fetch(RickAndMortyUrl)
+      .then(res => res.json())
+      .then(({ results }) => {
+        this.setState({
+          characterList: results,
+          characterListFiltered: results,
+          loading: false
+        });
+      });
+  }
+
   render() {
+    if (this.state.loading) {
+      return <div>Loading...</div>;
+    }
     return (
       <>
         <Filter handleChange={this.handleChange} value={this.state.value} />
         <ul className="App_card-list">
           {this.state.characterListFiltered.map(chart => (
-            <Card key={chart.id} {...chart} />
+            <Link to={`/details/${chart.id}`} key={chart.id}>
+              <Card {...chart} />
+            </Link>
           ))}
         </ul>
       </>
