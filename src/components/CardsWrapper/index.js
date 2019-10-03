@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Card from '../Card';
 import Filter from '../Filter';
 
+import FavoriteContext from '../../context/favoriteContext';
+
 const RickAndMortyUrl = 'https://rickandmortyapi.com/api/character';
 
 class CardsWrapper extends Component {
@@ -13,6 +15,8 @@ class CardsWrapper extends Component {
     characterListFiltered: [],
     loading: true
   };
+
+  // static contextType = FavoriteContext;
 
   handleChange = e => {
     const value = e.target.value;
@@ -47,7 +51,7 @@ class CardsWrapper extends Component {
         <ul className="App_card-list">
           {this.state.characterListFiltered.map(chart => (
             <Link to={`/details/${chart.id}`} key={chart.id}>
-              <Card {...chart} />
+              <Card {...chart} favorite={this.props.favoriteCharts[chart.id]} />
             </Link>
           ))}
         </ul>
@@ -56,4 +60,15 @@ class CardsWrapper extends Component {
   }
 }
 
-export default CardsWrapper;
+export default function CardsWrapperContext() {
+  return (
+    <FavoriteContext.Consumer>
+      {([favoriteCharts, setFavoriteCharts]) => (
+        <CardsWrapper
+          favoriteCharts={favoriteCharts}
+          setFavoriteCharts={setFavoriteCharts}
+        />
+      )}
+    </FavoriteContext.Consumer>
+  );
+}

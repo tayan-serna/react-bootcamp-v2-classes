@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+
+import FavoriteContext from '../../context/favoriteContext';
 
 const RickAndMortyAPI = 'https://rickandmortyapi.com/api/character/';
 
 const Details = props => {
   const [character, setCharacter] = useState({});
   const [loading, setLoading] = useState(true);
-  const [favorite, setFavorite] = useState(false);
+  // const [favorite, setFavorite] = useState(false);
+  const [favoriteCharts, setFavoriteCharts] = useContext(FavoriteContext);
 
   useEffect(() => {
     fetch(`${RickAndMortyAPI}${props.match.params.id}`)
@@ -18,7 +21,11 @@ const Details = props => {
   }, []);
 
   const handleImageClick = () => {
-    setFavorite(!favorite);
+    // setFavorite(!favorite);
+    setFavoriteCharts({
+      ...favoriteCharts,
+      [character.id]: !favoriteCharts[character.id]
+    });
   };
 
   if (loading) {
@@ -41,7 +48,7 @@ const Details = props => {
           className="App_detail__image"
           src={character.image}
         />
-        {favorite && (
+        {favoriteCharts[character.id] && (
           <span role="img" aria-label="star" className="App_detail__favorite">
             ⭐
           </span>
