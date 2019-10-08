@@ -1,39 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Comment from '../Comment';
 
-const CommentList = () => (
+const CommentList = props => (
   <div className="App_comments">
-    <Comment
-      message="lorem loremlorem loremlorem loremlorem lorem lorem loremlorem
-                loremlorem lorem lorem lorem lorem loremlorem loremlorem
-                loremlorem loremlorem loremlorem lorem"
-      author="adrian"
-    />
-    <Comment
-      message="lorem loremlorem loremlorem loremlorem lorem lorem loremlorem
-                loremlorem lorem lorem lorem lorem loremlorem loremlorem
-                loremlorem loremlorem loremlorem lorem"
-      author="adrian2"
-    />
-    <Comment
-      message="lorem loremlorem loremlorem loremlorem lorem lorem loremlorem
-                loremlorem lorem lorem lorem lorem loremlorem loremlorem
-                loremlorem loremlorem loremlorem lorem"
-      author="adrian3"
-    />
-    <Comment
-      message="lorem loremlorem loremlorem loremlorem lorem lorem loremlorem
-                loremlorem lorem lorem lorem lorem loremlorem loremlorem
-                loremlorem loremlorem loremlorem lorem"
-      author="adrian4"
-    />
-    <Comment
-      message="lorem loremlorem loremlorem loremlorem lorem lorem loremlorem
-                loremlorem lorem lorem lorem lorem loremlorem loremlorem
-                loremlorem loremlorem loremlorem lorem"
-      author="adrian5"
-    />
+    {props.comments.map(comment => (
+      <Comment
+        message={comment.comment}
+        author={comment.author}
+        key={comment.id}
+      />
+    ))}
   </div>
 );
 
-export default CommentList;
+const mapStateToProps = state => {
+  return {
+    comments: state.comments
+  };
+};
+
+export default connect(mapStateToProps)(CommentList);
