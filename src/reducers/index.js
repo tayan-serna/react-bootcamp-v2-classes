@@ -7,6 +7,10 @@ export default combineReducers({
 
 /*
 {
-  comments: []
+  comments: {
+    results: [],
+    loading: false,
+    error: false
+  }
 }
 */

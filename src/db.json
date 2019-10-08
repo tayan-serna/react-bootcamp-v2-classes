@@ -1,0 +1,19 @@
+{
+  "comments": [
+    {
+      "author": "adrian",
+      "comment": "comment",
+      "id": 1
+    },
+    {
+      "author": "adrian",
+      "comment": "comment",
+      "id": 2
+    },
+    {
+      "author": "adrian",
+      "comment": "other comment\n",
+      "id": 3
+    }
+  ]
+}

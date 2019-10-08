@@ -1,4 +1,5 @@
-import { createStore, compose } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 import reducer from './reducers';
 
@@ -23,6 +24,10 @@ console.log(makeBoldRepeatAndLouder('hello'));
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducer, {}, composeEnhancers());
+const store = createStore(
+  reducer,
+  {},
+  composeEnhancers(applyMiddleware(thunk))
+);
 
 export default store;
